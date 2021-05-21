@@ -148,17 +148,29 @@ class _ProductState extends State<Product> {
             ),
             GestureDetector(
               onTap: () {
-                setState(() {
-                  isFavorite = !isFavorite;
-                });
-                isFavorite
-                    ? context
-                        .read<FavoritsModel>()
-                        .addToFavorits(widget.prouductdata)
-                    : context
-                        .read<FavoritsModel>()
-                        .removeToFavorits(widget.prouductdata);
-                print(isFavorite);
+                // setState(() {
+                //   isFavorite = !isFavorite;
+                // });
+                // isFavorite
+                //     ? context
+                //         .read<FavoritsModel>()
+                //         .addToFavorits(widget.prouductdata)
+                //     : context
+                //         .read<FavoritsModel>()
+                //         .removeToFavorits(widget.prouductdata);
+                // print(isFavorite);
+
+                if (context.read<FavoritsModel>().getFavoritsList.contains((e) {
+                  print("${e.id} == ${widget.prouductdata.id}");
+                })) {
+                  context
+                      .read<FavoritsModel>()
+                      .addToFavorits(widget.prouductdata);
+                } else {
+                  context
+                      .read<FavoritsModel>()
+                      .removeToFavorits(widget.prouductdata);
+                }
               },
               child: Align(
                 alignment: Alignment.topRight,
@@ -178,7 +190,12 @@ class _ProductState extends State<Product> {
                       'assets/icons/like.svg',
                       size: Size(20, 20),
                     ),
-                    color: isFavorite ? Colors.red : Colors.grey.shade500,
+                    color: context
+                            .read<FavoritsModel>()
+                            .getFavoritsList
+                            .contains((e) => e.id == widget.prouductdata.id)
+                        ? Colors.red
+                        : Colors.grey.shade500,
                   ),
                 ),
               ),
